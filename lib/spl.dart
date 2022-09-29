@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:streetvendor/bg.dart';
 import 'package:streetvendor/loginpage.dart';
 
 class splash extends StatefulWidget {
@@ -16,7 +17,7 @@ class _splashState extends State<splash> {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context, MaterialPageRoute(builder: (context) => mainpage()));
     });
   }
 
@@ -42,7 +43,6 @@ class _splashState extends State<splash> {
                 height: 100,
                 width: 100,
               ),
-              
               SizedBox(
                 height: 30,
               ),
