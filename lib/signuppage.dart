@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streetvendor/registerShop.dart';
 import 'package:streetvendor/splash.dart';
@@ -12,7 +13,21 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
+  final _email = TextEditingController();
+  final _pass = TextEditingController();
+  Future signup() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _email.text.trim(), password: _pass.text.trim());
+  }
+
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _email.dispose();
+    _pass.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -28,217 +43,154 @@ class _signupState extends State<signup> {
                       Color(0xFF3f6fdf),
                     ])),
                 child: Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      blurRadius: 16,
-                      spreadRadius: 16,
-                      color: Colors.black.withOpacity(0.2),
-                    )
-                  ]),
+                  decoration: BoxDecoration(boxShadow: []),
                   child: Center(
-                    child: Column(children: [
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        'SIGN UP',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: 30,
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16.0),
-                        child: BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 40.0,
-                              sigmaY: 40.0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 50,
                             ),
-                            child: Container(
-                              height: 550,
-                              width: 400,
-                              decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  border: Border.all(
-                                    width: 1.5,
-                                    color: Colors.white.withOpacity(0.7),
-                                  )),
-                              child: Center(
-                                  child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 50,
+                            Text(
+                              'SIGN UP',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: 30,
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16.0),
+                              child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 30.0,
+                                    sigmaY: 30.0,
                                   ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25.0),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          hintText: 'Name',
-                                          icon: Icon(
-                                            Icons.person,
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          ),
-                                          hintStyle: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          )),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25.0),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          hintText: 'Phone',
-                                          icon: Icon(
-                                            Icons.phone,
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          ),
-                                          hintStyle: TextStyle(
-                                              color: Colors.white
-                                                  .withOpacity(0.7))),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25.0),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          hintText: 'Address',
-                                          icon: Icon(
-                                            Icons.home,
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          ),
-                                          hintStyle: TextStyle(
-                                              color: Colors.white
-                                                  .withOpacity(0.7))),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25.0),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          hintText: 'Email',
-                                          icon: Icon(
-                                            Icons.email,
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          ),
-                                          hintStyle: TextStyle(
-                                              color: Colors.white
-                                                  .withOpacity(0.7))),
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25.0),
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                          enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.white)),
-                                          hintText: 'Password',
-                                          icon: Icon(
-                                            Icons.lock,
-                                            color:
-                                                Colors.white.withOpacity(0.7),
-                                          ),
-                                          hintStyle: TextStyle(
-                                              color: Colors.white
-                                                  .withOpacity(0.7))),
-                                    ),
-                                  ),
-                                  SizedBox(height: 30),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 110),
-                                      child: Container(
-                                        padding: EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                  child: Container(
+                                    height: 400,
+                                    width: 370,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        border: Border.all(
+                                          width: 1.5,
+                                          color: Colors.white.withOpacity(0.5),
+                                        )),
+                                    child: Center(
+                                        child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 50,
                                         ),
-                                        child: Center(
-                                            child: TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Register()),
-                                            );
-                                          },
-                                          child: Text(
-                                            'NEXT',
-                                            style: TextStyle(
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                              fontSize: 20,
+                                        SizedBox(height: 20),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25.0),
+                                          child: TextField(
+                                            controller: _email,
+                                            decoration: InputDecoration(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white)),
+                                                hintText: 'Email',
+                                                icon: Icon(
+                                                  Icons.email,
+                                                  color: Colors.white
+                                                      .withOpacity(0.7),
+                                                ),
+                                                hintStyle: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7))),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25.0),
+                                          child: TextField(
+                                            controller: _pass,
+                                            decoration: InputDecoration(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                Colors.white)),
+                                                hintText: 'Password',
+                                                icon: Icon(
+                                                  Icons.lock,
+                                                  color: Colors.white
+                                                      .withOpacity(0.7),
+                                                ),
+                                                hintStyle: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7))),
+                                          ),
+                                        ),
+                                        SizedBox(height: 40),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 90.0),
+                                          child: GestureDetector(
+                                            onTap: signup,
+                                            child: Container(
+                                              padding: EdgeInsets.all(20),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white
+                                                      .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0)),
+                                              child: Center(
+                                                child: Text(
+                                                  'Sign Up >',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        )),
-                                      )),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 110),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Already a member..?..',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white
-                                                  .withOpacity(0.7)),
                                         ),
-                                        GestureDetector(
-                                          onTap: widget.showLoginPage,
-                                          child: Text(
-                                            'Sign in',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 113, 82, 235),
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Already a member..?..',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white
+                                                      .withOpacity(0.7)),
+                                            ),
+                                            GestureDetector(
+                                              onTap: widget.showLoginPage,
+                                              child: Text(
+                                                'Sign in',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 113, 82, 235),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                            )),
-                      ),
-                    ]),
+                                    )),
+                                  )),
+                            ),
+                          ]),
+                    ),
                   ),
                 ))));
   }
