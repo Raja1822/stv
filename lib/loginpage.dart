@@ -4,7 +4,8 @@ import 'package:streetvendor/signuppage.dart';
 import 'package:streetvendor/splash.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final VoidCallback showRegisterPage;
+  const LoginPage({Key? key, required this.showRegisterPage}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -147,13 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                             fontSize: 15, color: Colors.white.withOpacity(0.7)),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => signup()));
-                        },
+                      GestureDetector(
+                        onTap: widget.showRegisterPage,
                         child: Text(
                           'Sign Up',
                           style: TextStyle(

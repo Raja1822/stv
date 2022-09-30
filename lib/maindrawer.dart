@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:streetvendor/contacts.dart';
 import 'package:streetvendor/home2.dart';
@@ -110,10 +111,7 @@ class maindrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
+              FirebaseAuth.instance.signOut();
             },
             leading: Icon(
               Icons.logout,

@@ -3,8 +3,15 @@ import 'package:streetvendor/registerShop.dart';
 import 'package:streetvendor/splash.dart';
 import 'dart:ui';
 
-class signup extends StatelessWidget {
-  const signup({super.key});
+class signup extends StatefulWidget {
+  final VoidCallback showLoginPage;
+  const signup({super.key, required this.showLoginPage});
+
+  @override
+  State<signup> createState() => _signupState();
+}
+
+class _signupState extends State<signup> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -197,6 +204,36 @@ class signup extends StatelessWidget {
                                           ),
                                         )),
                                       )),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 110),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Already a member..?..',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white
+                                                  .withOpacity(0.7)),
+                                        ),
+                                        GestureDetector(
+                                          onTap: widget.showLoginPage,
+                                          child: Text(
+                                            'Sign in',
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 113, 82, 235),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               )),
                             )),
