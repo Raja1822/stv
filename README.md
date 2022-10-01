@@ -1,11 +1,12 @@
-# streetvendor
+# Streetvendor
 
 A Flutter application which is developed for small scale shops and markets....
 
 It is a hybrid app which can support for Android , IOS , Web .
 A website which is linked with this app which is for customers..
 
-Application on the mobile is for the vendors who can upload and updated their infos according to their shops..
+Application on the mobile is for the vendors who can upload and update their infos according to their shops..
+
 The website is like an ecommerce website which is used for intimate the vendor or order their needs.. if the vendor wishes to deliver home.
 
 A few resources to get you started if this is your first Flutter project:
