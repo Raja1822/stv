@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:streetvendor/storage_page.dart';
 
 import 'maindrawer.dart';
 
@@ -16,72 +17,9 @@ class _HomePageState extends State<HomePage> {
 
 //
 
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  String? _fileName;
-  String? _saveAsFileName;
-  List<PlatformFile>? _paths;
-  String? _directoryPath;
-  String? _extension;
-  bool _isLoading = false;
-  bool _userAborted = false;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.any;
-  TextEditingController _controller = TextEditingController();
-
-  void _resetState() {
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      _isLoading = true;
-      _directoryPath = null;
-      _fileName = null;
-      _paths = null;
-      _saveAsFileName = null;
-      _userAborted = false;
-    });
-  }
-
-  void _logException(String message) {
-    print(message);
-    _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-    _scaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
-  void _pickFiles() async {
-    _resetState();
-    try {
-      _directoryPath = null;
-      _paths = (await FilePicker.platform.pickFiles(
-        type: _pickingType,
-        allowMultiple: _multiPick,
-        onFileLoading: (FilePickerStatus status) => print(status),
-        allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
-    } on PlatformException catch (e) {
-      _logException('Unsupported operation' + e.toString());
-    } catch (e) {
-      _logException(e.toString());
-    }
-
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _fileName =
-          _paths != null ? _paths!.map((e) => e.name).toString() : '...';
-      _userAborted = _paths == null;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final Storage storage = Storage();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -114,7 +52,24 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                     elevation: 0,
                     backgroundColor: Colors.white.withOpacity(0.2),
-                    onPressed: () => _pickFiles(),
+                    onPressed: () async {
+                      final results = await FilePicker.platform.pickFiles(
+                          allowMultiple: false,
+                          allowedExtensions: ['png', 'jpg'],
+                          type: FileType.custom);
+                      if (results == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text(' no img selected')),
+                        );
+                        return null;
+                      }
+                      final path = results.files.single.path!;
+                      final fileName = results.files.single.name;
+
+                      storage
+                          .uploadFile(path, fileName)
+                          .then((value) => print('done'));
+                    },
                     child: Icon(Icons.camera)),
               ),
             ),
