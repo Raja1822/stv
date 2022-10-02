@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:streetvendor/contacts.dart';
 import 'package:streetvendor/home2.dart';
 import 'package:streetvendor/loginpage.dart';
+import 'package:streetvendor/savePage.dart';
 import 'package:streetvendor/settings.dart';
 
 class maindrawer extends StatelessWidget {
@@ -81,6 +82,23 @@ class maindrawer extends StatelessWidget {
             ),
             title: Text(
               "Contacts",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => SavePage()));
+            },
+            leading: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            title: Text(
+              "Savepage",
               style: TextStyle(color: Colors.white),
             ),
           ),
