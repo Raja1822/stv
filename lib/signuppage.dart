@@ -26,9 +26,9 @@ class _signupState extends State<signup> {
       );
 
       addUser(
-        _email.text.trim(),
         _name.text.trim(),
         _shopname.text.trim(),
+        _email.text.trim(),
         _pass.text.trim(),
       );
     }
@@ -55,9 +55,10 @@ class _signupState extends State<signup> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _email.dispose();
+
     _name.dispose();
     _shopname.dispose();
+    _email.dispose();
     _pass.dispose();
     _cnfmpass.dispose();
     super.dispose();
