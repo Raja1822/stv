@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:streetvendor/authpage.dart';
 import 'package:streetvendor/homepage.dart';
 import 'package:streetvendor/loginpage.dart';
-import 'package:streetvendor/registerShop.dart';
 
 class mainpage extends StatelessWidget {
   const mainpage({super.key});

@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:streetvendor/registerShop.dart';
 import 'package:streetvendor/splash.dart';
 import 'dart:ui';
 
@@ -13,6 +13,8 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
+  final _name = TextEditingController();
+  final _shopname = TextEditingController();
   final _email = TextEditingController();
   final _pass = TextEditingController();
   final _cnfmpass = TextEditingController();
@@ -22,7 +24,25 @@ class _signupState extends State<signup> {
         email: _email.text.trim(),
         password: _pass.text.trim(),
       );
+
+      addUser(
+        _email.text.trim(),
+        _name.text.trim(),
+        _shopname.text.trim(),
+      );
     }
+  }
+
+  Future addUser(
+    String Name,
+    String Shopname,
+    String Email,
+  ) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'Name': Name,
+      'Shop Name': Shopname,
+      'Email': Email,
+    });
   }
 
   bool passcontrol() {
@@ -37,6 +57,8 @@ class _signupState extends State<signup> {
   void dispose() {
     // TODO: implement dispose
     _email.dispose();
+    _name.dispose();
+    _shopname.dispose();
     _pass.dispose();
     _cnfmpass.dispose();
     super.dispose();
@@ -81,7 +103,7 @@ class _signupState extends State<signup> {
                                 sigmaY: 30.0,
                               ),
                               child: Container(
-                                height: 420,
+                                height: 600,
                                 width: 370,
                                 decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.1),
@@ -96,6 +118,50 @@ class _signupState extends State<signup> {
                                     SizedBox(
                                       height: 50,
                                     ),
+                                    SizedBox(height: 20),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25.0),
+                                      child: TextField(
+                                        controller: _name,
+                                        decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            hintText: 'Name',
+                                            icon: Icon(
+                                              Icons.person_sharp,
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                            ),
+                                            hintStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7))),
+                                      ),
+                                    ),
+                                    // ---------------------------
+                                    SizedBox(height: 20),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25.0),
+                                      child: TextField(
+                                        controller: _shopname,
+                                        decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white)),
+                                            hintText: 'Shop Name',
+                                            icon: Icon(
+                                              Icons.home_outlined,
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                            ),
+                                            hintStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7))),
+                                      ),
+                                    ),
+                                    // ---------------------------
                                     SizedBox(height: 20),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -117,6 +183,7 @@ class _signupState extends State<signup> {
                                                     .withOpacity(0.7))),
                                       ),
                                     ),
+                                    // ---------------------------
                                     SizedBox(height: 20),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
