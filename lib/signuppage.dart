@@ -29,19 +29,18 @@ class _signupState extends State<signup> {
         _email.text.trim(),
         _name.text.trim(),
         _shopname.text.trim(),
+        _pass.text.trim(),
       );
     }
   }
 
   Future addUser(
-    String Name,
-    String Shopname,
-    String Email,
-  ) async {
+      String Name, String Shopname, String Email, String Password) async {
     await FirebaseFirestore.instance.collection('users').add({
       'Name': Name,
       'Shop Name': Shopname,
       'Email': Email,
+      'Password': Password
     });
   }
 
