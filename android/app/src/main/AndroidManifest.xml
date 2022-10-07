@@ -3,7 +3,7 @@
    <application
         android:label="STV"
         android:name="${applicationName}"
-        android:icon="@mipmap/img1">
+        android:icon="@mipmap/stv1">
         <activity
             android:name=".MainActivity"
             android:exported="true"
