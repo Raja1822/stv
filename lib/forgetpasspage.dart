@@ -103,7 +103,10 @@ class _forgetpageState extends State<forgetpage> {
             MaterialButton(
               elevation: 0,
               onPressed: passwordReset,
-              child: Text('Reset Button'),
+              child: Text(
+                'Reset Button',
+                style: TextStyle(color: Colors.white),
+              ),
               color: Colors.white.withOpacity(0.2),
             )
           ],
