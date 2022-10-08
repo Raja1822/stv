@@ -136,6 +136,13 @@ class _LoginPageState extends State<LoginPage> {
                                               labelStyle: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(0.7))),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'required';
+                                            } else {
+                                              return null;
+                                            }
+                                          },
                                         ),
                                       ],
                                     ),
