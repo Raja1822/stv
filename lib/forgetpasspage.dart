@@ -18,8 +18,26 @@ class _forgetpageState extends State<forgetpage> {
   }
 
   Future passwordReset() async {
-    await FirebaseAuth.instance
-        .sendPasswordResetEmail(email: _email.text.trim());
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _email.text.trim());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                  'Password reset link has been sent to your email. Please check your email for Password reset link'),
+            );
+          });
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
+    }
   }
 
   Widget build(BuildContext context) {
