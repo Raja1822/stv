@@ -39,7 +39,7 @@ class _splashState extends State<splash> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/stv1.jpg',
+                'assets/stv1.png',
                 height: 100,
                 width: 100,
               ),
