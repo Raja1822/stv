@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:streetvendor/forgetpasspage.dart';
 import 'package:streetvendor/signuppage.dart';
 import 'package:streetvendor/splash.dart';
@@ -17,12 +19,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _email = TextEditingController();
   final _pass = TextEditingController();
+
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'password is required'),
+    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'passwords must have at least one special character')
+  ]);
   Future signin() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text.trim(), password: _pass.text.trim());
   }
 
+  late String password;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -91,34 +102,47 @@ class _LoginPageState extends State<LoginPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
                                   child: Form(
+                                    autovalidateMode: AutovalidateMode.always,
                                     key: formkey,
                                     child: Column(
                                       children: [
                                         TextFormField(
-                                          controller: _email,
-                                          decoration: InputDecoration(
-                                              enabledBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors
-                                                              .white
-                                                              .withOpacity(
-                                                                  0.7))),
-                                              icon: Icon(
-                                                Icons.mail_outline_outlined,
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                              ),
-                                              labelText: "Email",
-                                              labelStyle: TextStyle(
+                                            onChanged: (val) => password = val,
+                                            controller: _email,
+                                            decoration: InputDecoration(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors
+                                                                .white
+                                                                .withOpacity(
+                                                                    0.7))),
+                                                icon: Icon(
+                                                  Icons.mail_outline_outlined,
                                                   color: Colors.white
-                                                      .withOpacity(0.7))),
-                                        ),
+                                                      .withOpacity(0.7),
+                                                ),
+                                                labelText: "Email",
+                                                hintText: 'something@gmail.com',
+                                                hintStyle: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7)),
+                                                labelStyle: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7))),
+                                            validator: MultiValidator([
+                                              EmailValidator(
+                                                  errorText:
+                                                      "Enter a valid email"),
+                                              RequiredValidator(
+                                                  errorText: "Email Required")
+                                            ])),
                                         SizedBox(
                                           height: 20,
                                         ),
                                         TextFormField(
                                           controller: _pass,
+                                          validator: passwordValidator,
                                           decoration: InputDecoration(
                                               enabledBorder:
                                                   UnderlineInputBorder(
@@ -133,16 +157,13 @@ class _LoginPageState extends State<LoginPage> {
                                                     .withOpacity(0.7),
                                               ),
                                               labelText: "Password",
+                                              hintText: 'Enter Your Password',
+                                              hintStyle: TextStyle(
+                                                  color: Colors.white
+                                                      .withOpacity(0.7)),
                                               labelStyle: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(0.7))),
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return 'required';
-                                            } else {
-                                              return null;
-                                            }
-                                          },
                                         ),
                                       ],
                                     ),
