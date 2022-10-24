@@ -1,8 +1,7 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:streetvendor/storage_page.dart';
 
 import 'maindrawer.dart';
@@ -65,7 +64,8 @@ class _HomePageState extends State<HomePage> {
                       }
                       final path = results.files.single.path!;
                       final fileName = results.files.single.name;
-
+                      print(path);
+                      print(fileName);
                       storage
                           .uploadFile(path, fileName)
                           .then((value) => print('done'));

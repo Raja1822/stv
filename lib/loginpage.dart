@@ -107,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Column(
                                       children: [
                                         TextFormField(
-                                            onChanged: (val) => password = val,
                                             controller: _email,
                                             decoration: InputDecoration(
                                                 enabledBorder:
