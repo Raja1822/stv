@@ -1,7 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:streetvendor/maindrawer.dart';
+import 'package:streetvendor/storage_page.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({super.key});
@@ -11,6 +13,7 @@ class SavePage extends StatefulWidget {
 }
 
 class _SavePageState extends State<SavePage> {
+  final img = firebase_storage.DownloadTask;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,11 +63,7 @@ class _SavePageState extends State<SavePage> {
                           SizedBox(
                             width: 30,
                           ),
-                          Image.asset(
-                            'assets/img1.jpg',
-                            height: 250,
-                            width: 250,
-                          ),
+                          Image.network("$img"),
                           Column(
                             children: [
                               SizedBox(height: 40),
