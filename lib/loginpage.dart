@@ -44,104 +44,69 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                Color(0xFFc51c6b),
-                Color(0xFFbc6c97),
-                Color(0xFF3f6fdf),
-              ])),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'LOGIN',
-                    style: TextStyle(
-                      fontSize: 54.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+              Color(0xFFc51c6b),
+              Color(0xFFbc6c97),
+              Color(0xFF3f6fdf),
+            ])),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'LOGIN',
+                  style: TextStyle(
+                    fontSize: 54.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: 30.0,
-                            sigmaY: 30.0,
-                          ),
-                          child: Container(
-                            height: 500,
-                            width: 370,
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(16.0),
-                                border: Border.all(
-                                  width: 1.5,
-                                  color: Colors.white.withOpacity(0.5),
-                                )),
-                            child: Center(
-                                child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 50,
-                                ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: 30.0,
+                          sigmaY: 30.0,
+                        ),
+                        child: Container(
+                          height: 500,
+                          width: 370,
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(16.0),
+                              border: Border.all(
+                                width: 1.5,
+                                color: Colors.white.withOpacity(0.5),
+                              )),
+                          child: Center(
+                              child: Column(
+                            children: [
+                              SizedBox(
+                                height: 50,
+                              ),
 
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25.0),
-                                  child: Form(
-                                    autovalidateMode: AutovalidateMode.always,
-                                    key: formkey,
-                                    child: Column(
-                                      children: [
-                                        TextFormField(
-                                            controller: _email,
-                                            decoration: InputDecoration(
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color: Colors
-                                                                .white
-                                                                .withOpacity(
-                                                                    0.7))),
-                                                icon: Icon(
-                                                  Icons.mail_outline_outlined,
-                                                  color: Colors.white
-                                                      .withOpacity(0.7),
-                                                ),
-                                                labelText: "Email",
-                                                hintText: 'something@gmail.com',
-                                                hintStyle: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7)),
-                                                labelStyle: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7))),
-                                            validator: MultiValidator([
-                                              EmailValidator(
-                                                  errorText:
-                                                      "Enter a valid email"),
-                                              RequiredValidator(
-                                                  errorText: "Email Required")
-                                            ])),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        TextFormField(
-                                          controller: _pass,
-                                          validator: passwordValidator,
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25.0),
+                                child: Form(
+                                  autovalidateMode: AutovalidateMode.always,
+                                  key: formkey,
+                                  child: Column(
+                                    children: [
+                                      TextFormField(
+                                          controller: _email,
                                           decoration: InputDecoration(
                                               enabledBorder:
                                                   UnderlineInputBorder(
@@ -151,110 +116,139 @@ class _LoginPageState extends State<LoginPage> {
                                                               .withOpacity(
                                                                   0.7))),
                                               icon: Icon(
-                                                Icons.lock,
+                                                Icons.mail_outline_outlined,
                                                 color: Colors.white
                                                     .withOpacity(0.7),
                                               ),
-                                              labelText: "Password",
-                                              hintText: 'Enter Your Password',
+                                              labelText: "Email",
+                                              hintText: 'something@gmail.com',
                                               hintStyle: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(0.7)),
                                               labelStyle: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(0.7))),
-                                        ),
-                                      ],
-                                    ),
+                                          validator: MultiValidator([
+                                            EmailValidator(
+                                                errorText:
+                                                    "Enter a valid email"),
+                                            RequiredValidator(
+                                                errorText: "Email Required")
+                                          ])),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                        controller: _pass,
+                                        validator: passwordValidator,
+                                        decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7))),
+                                            icon: Icon(
+                                              Icons.lock,
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                            ),
+                                            labelText: "Password",
+                                            hintText: 'Enter Your Password',
+                                            hintStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7)),
+                                            labelStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7))),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                // ---------------------------
+                              ),
+                              // ---------------------------
 
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25),
-                                      child: TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        forgetpage()));
-                                          },
-                                          child: Text(
-                                            'Forget password.?',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 30.0,
-                                ),
-                                SizedBox(height: 10.0),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 90.0),
-                                  child: GestureDetector(
-                                    onTap: signin,
-                                    child: Container(
-                                      padding: EdgeInsets.all(20),
-                                      decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0)),
-                                      child: Center(
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 25),
+                                    child: TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      forgetpage()));
+                                        },
                                         child: Text(
-                                          'Sign In >',
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
+                                          'Forget password.?',
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              SizedBox(height: 10.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 90.0),
+                                child: GestureDetector(
+                                  onTap: signin,
+                                  child: Container(
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.2),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                    child: Center(
+                                      child: Text(
+                                        'Sign In >',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'New member..?..',
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'New member..?..',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white.withOpacity(0.7)),
+                                  ),
+                                  GestureDetector(
+                                    onTap: widget.showRegisterPage,
+                                    child: Text(
+                                      'Sign Up',
                                       style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white.withOpacity(0.7)),
+                                          color:
+                                              Color.fromARGB(255, 113, 82, 235),
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    GestureDetector(
-                                      onTap: widget.showRegisterPage,
-                                      child: Text(
-                                        'Sign Up',
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 113, 82, 235),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )),
+                                  ),
+                                ],
+                              ),
+                            ],
                           )),
-                    ),
+                        )),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
