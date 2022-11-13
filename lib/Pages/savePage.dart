@@ -1,19 +1,40 @@
 import 'dart:io';
-import 'package:streetvendor/storage_page.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:streetvendor/Pages/homepage.dart';
+import 'package:streetvendor/Pages/storage_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:streetvendor/maindrawer.dart';
-import 'package:streetvendor/storage_page.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({super.key});
 
   @override
   State<SavePage> createState() => _SavePageState();
+}
+
+Future save() async {
+  addData(
+    _title.text.trim(),
+    _quantity.text.trim(),
+    _price.text.trim(),
+  );
+}
+
+final _title = TextEditingController();
+final _quantity = TextEditingController();
+final _price = TextEditingController();
+
+final user = FirebaseAuth.instance.currentUser?.email;
+
+Future addData(String Title, String Quantity, String Price) async {
+  await FirebaseFirestore.instance.collection('savedData/').add({
+    'Title': Title,
+    'Quantity': Quantity,
+    'Price': Price,
+  });
 }
 
 class _SavePageState extends State<SavePage> {
@@ -27,46 +48,150 @@ class _SavePageState extends State<SavePage> {
             topRight: Radius.circular(10.0),
           ),
           child: Container(
-            color: Colors.white,
-            height: 250,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                  Color(0xFFc51c6b),
+                  Color(0xFFbc6c97),
+                  Color(0xFF3f6fdf),
+                ])),
+            height: 300,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    "Pic Image From",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      pickImage(ImageSource.camera);
-                    },
-                    icon: const Icon(Icons.camera),
-                    label: const Text("CAMERA"),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      pickImage(ImageSource.gallery);
-                    },
-                    icon: const Icon(Icons.image),
-                    label: const Text("GALLERY"),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.close),
-                    label: const Text("CANCEL"),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Pic Image From",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        pickImage(ImageSource.camera);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'Camera',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    //------------------gallery
+                    GestureDetector(
+                      onTap: () {
+                        pickImage(ImageSource.gallery);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'Gallery',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    //-------------------
+                    SizedBox(
+                      height: 20,
+                    ),
+                    //------------cancel
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    //-----------
+                  ],
+                ),
               ),
             ),
           ),
@@ -80,6 +205,9 @@ class _SavePageState extends State<SavePage> {
       final photo = await ImagePicker().pickImage(source: imageType);
       if (photo == null) return;
       final tempImage = File(photo.path);
+      final name = photo.name;
+      final path = photo.path;
+      storage.uploadFile(path, name);
       setState(() {
         pickedImage = tempImage;
       });
@@ -91,6 +219,16 @@ class _SavePageState extends State<SavePage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+
+    _title.dispose();
+    _quantity.dispose();
+    _price.dispose();
+
+    super.dispose();
+  }
+
   final Storage storage = Storage();
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,6 +325,7 @@ class _SavePageState extends State<SavePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
                                   child: TextField(
+                                    controller: _title,
                                     decoration: InputDecoration(
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
@@ -206,6 +345,7 @@ class _SavePageState extends State<SavePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
                                   child: TextField(
+                                    controller: _quantity,
                                     decoration: InputDecoration(
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
@@ -226,6 +366,7 @@ class _SavePageState extends State<SavePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
                                   child: TextField(
+                                    controller: _price,
                                     decoration: InputDecoration(
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
@@ -248,10 +389,7 @@ class _SavePageState extends State<SavePage> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            final path = pickedImage!.path;
-                                            final filename =
-                                                pickedImage!.path.camelCase;
-                                            storage.uploadFile(path, filename!);
+                                            save();
                                           },
                                           child: Container(
                                             padding: EdgeInsets.all(15),
@@ -282,7 +420,7 @@ class _SavePageState extends State<SavePage> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          maindrawer()));
+                                                          HomePage()));
                                             },
                                             child: Text("Back"))
                                       ],

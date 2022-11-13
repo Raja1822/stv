@@ -10,10 +10,10 @@ class Storage {
       firebase_storage.FirebaseStorage.instance;
 
   Future<void> uploadFile(
-    String pickedImage,
+    String filepath,
     String fileName,
   ) async {
-    File file = File(pickedImage);
+    File file = File(filepath);
 
     try {
       await storage.ref('$user/$fileName').putFile(file);

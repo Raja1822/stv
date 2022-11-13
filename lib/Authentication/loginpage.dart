@@ -2,11 +2,10 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:streetvendor/forgetpasspage.dart';
-import 'package:streetvendor/signuppage.dart';
-import 'package:streetvendor/splash.dart';
+import 'package:streetvendor/Authentication/forgetpasspage.dart';
+import 'package:streetvendor/custom&validation/colors.dart';
+import 'package:streetvendor/custom&validation/custom_text_field.dart';
+import 'package:streetvendor/custom&validation/validation_util.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -17,29 +16,60 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _email = TextEditingController();
-  final _pass = TextEditingController();
+  //final _email = TextEditingController();
+  //final _pass = TextEditingController();
 
-  final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
-    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
-        errorText: 'passwords must have at least one special character')
-  ]);
-  Future signin() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _email.text.trim(), password: _pass.text.trim());
+  bool _isPasswordVisible = false;
+
+  String _password = "";
+  String _email = "";
+
+  late final TextEditingController _passwordController;
+  late final TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _passwordController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _password = _passwordController.text.trim();
+        });
+      });
+    _emailController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _email = _emailController.text.trim();
+        });
+      });
   }
 
-  late String password;
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  bool _isPasswordValid({bool skipEmpty = true}) =>
+      _password.length >= 8 || (skipEmpty && _password.isEmpty);
+
+  bool _isEmailValid({bool skipEmpty = true}) =>
+      ValidationUtil.isValidEmail(_email) || (skipEmpty && _email.isEmpty);
+
+  bool get _isFormValid =>
+      _isPasswordValid(skipEmpty: false) && _isEmailValid(skipEmpty: false);
+
+  Future signin() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim());
+  }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _email.dispose();
-    _pass.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
+  }
+
+  void _toggleVisibility() {
+    setState(() => _isPasswordVisible = !_isPasswordVisible);
   }
 
   Widget build(BuildContext context) {
@@ -100,67 +130,38 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 25.0),
-                                child: Form(
-                                  autovalidateMode: AutovalidateMode.always,
-                                  key: formkey,
-                                  child: Column(
-                                    children: [
-                                      TextFormField(
-                                          controller: _email,
-                                          decoration: InputDecoration(
-                                              enabledBorder:
-                                                  UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Colors
-                                                              .white
-                                                              .withOpacity(
-                                                                  0.7))),
-                                              icon: Icon(
-                                                Icons.mail_outline_outlined,
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                              ),
-                                              labelText: "Email",
-                                              hintText: 'something@gmail.com',
-                                              hintStyle: TextStyle(
-                                                  color: Colors.white
-                                                      .withOpacity(0.7)),
-                                              labelStyle: TextStyle(
-                                                  color: Colors.white
-                                                      .withOpacity(0.7))),
-                                          validator: MultiValidator([
-                                            EmailValidator(
-                                                errorText:
-                                                    "Enter a valid email"),
-                                            RequiredValidator(
-                                                errorText: "Email Required")
-                                          ])),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      TextFormField(
-                                        controller: _pass,
-                                        validator: passwordValidator,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7))),
-                                            icon: Icon(
-                                              Icons.lock,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            labelText: "Password",
-                                            hintText: 'Enter Your Password',
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7)),
-                                            labelStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
-                                      ),
-                                    ],
+                                child: CustomTextField(
+                                    placeholder: "Email",
+                                    valid: _isEmailValid(),
+                                    errorText: "Invalid email",
+                                    controller: _emailController,
+                                    prefixIcon: const Icon(
+                                      Icons.mail,
+                                      color: themeColorDarkest,
+                                    )),
+                              ),
+
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25.0),
+                                child: CustomTextField(
+                                  controller: _passwordController,
+                                  valid: _isPasswordValid(),
+                                  errorText:
+                                      "Password must of of at-least of 8 characters",
+                                  hideText: !_isPasswordVisible,
+                                  suffixIcon: IconButton(
+                                      onPressed: _toggleVisibility,
+                                      icon: Icon(_isPasswordVisible
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined)),
+                                  placeholder: "Password",
+                                  prefixIcon: const Icon(
+                                    Icons.lock,
+                                    color: themeColorDarkest,
                                   ),
                                 ),
                               ),

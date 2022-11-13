@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:streetvendor/splash.dart';
+import 'package:streetvendor/custom&validation/colors.dart';
+import 'package:streetvendor/custom&validation/custom_text_field.dart';
+import 'package:streetvendor/custom&validation/validation_util.dart';
 import 'dart:ui';
 
 class signup extends StatefulWidget {
@@ -13,39 +15,95 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  final _name = TextEditingController();
-  final _shopname = TextEditingController();
-  final _email = TextEditingController();
-  final _pass = TextEditingController();
-  final _cnfmpass = TextEditingController();
+  //final _name = TextEditingController();
+  //final _shopname = TextEditingController();
+  //final _email = TextEditingController();
+  //final _pass = TextEditingController();
+  //final _cnfmpass = TextEditingController();
+
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+  String _username = "";
+  String _password = "";
+  String _email = "";
+  String _confirmPassword = "";
+
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _username = _usernameController.text.trim();
+        });
+      });
+    _passwordController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _password = _passwordController.text.trim();
+        });
+      });
+    _emailController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _email = _emailController.text.trim();
+        });
+      });
+    _confirmPasswordController = TextEditingController()
+      ..addListener(() {
+        setState(() {
+          _confirmPassword = _confirmPasswordController.text.trim();
+        });
+      });
+  }
+
+  bool _isUsernameValid({bool skipEmpty = true}) =>
+      _username.length >= 3 || (skipEmpty && _username.isEmpty);
+
+  bool _isPasswordValid({bool skipEmpty = true}) =>
+      _password.length >= 8 || (skipEmpty && _password.isEmpty);
+
+  bool _isConfirmPasswordValid({bool skipEmpty = true}) =>
+      _confirmPassword == _password || (skipEmpty && _confirmPassword.isEmpty);
+
+  bool _isEmailValid({bool skipEmpty = true}) =>
+      ValidationUtil.isValidEmail(_email) || (skipEmpty && _email.isEmpty);
+
+  bool get _isFormValid =>
+      _isUsernameValid(skipEmpty: false) &&
+      _isPasswordValid(skipEmpty: false) &&
+      _isConfirmPasswordValid(skipEmpty: false) &&
+      _isEmailValid(skipEmpty: false);
+
   Future signup() async {
     if (passcontrol()) {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _email.text.trim(),
-        password: _pass.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
       addUser(
-        _name.text.trim(),
-        _shopname.text.trim(),
-        _email.text.trim(),
-        _pass.text.trim(),
+        _usernameController.text.trim(),
+        _passwordController.text.trim(),
+        _emailController.text.trim(),
       );
     }
   }
 
-  Future addUser(
-      String Name, String Shopname, String Email, String Password) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'Name': Name,
-      'Shop Name': Shopname,
-      'Email': Email,
-      'Password': Password
-    });
+  Future addUser(String userName, String Email, String Password) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .add({'Name': userName, 'Email': Email, 'Password': Password});
   }
 
   bool passcontrol() {
-    if (_pass.text.trim() == _cnfmpass.text.trim()) {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
       return true;
     } else {
       return false;
@@ -56,12 +114,20 @@ class _signupState extends State<signup> {
   void dispose() {
     // TODO: implement dispose
 
-    _name.dispose();
-    _shopname.dispose();
-    _email.dispose();
-    _pass.dispose();
-    _cnfmpass.dispose();
+    _usernameController.dispose();
+
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void _toggleVisibility() {
+    setState(() => _isPasswordVisible = !_isPasswordVisible);
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible);
   }
 
   Widget build(BuildContext context) {
@@ -122,110 +188,82 @@ class _signupState extends State<signup> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 25.0),
-                                      child: TextField(
-                                        controller: _name,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            hintText: 'Name',
-                                            icon: Icon(
-                                              Icons.person_sharp,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
-                                      ),
+                                      child: CustomTextField(
+                                          placeholder: "Username",
+                                          controller: _usernameController,
+                                          valid: _isUsernameValid(),
+                                          errorText: "Invalid username",
+                                          prefixIcon: const Icon(
+                                            Icons.person,
+                                            color: themeColorDarkest,
+                                          )),
                                     ),
                                     // ---------------------------
                                     SizedBox(height: 20),
+
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 25.0),
-                                      child: TextField(
-                                        controller: _shopname,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            hintText: 'Shop Name',
-                                            icon: Icon(
-                                              Icons.home_outlined,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
-                                      ),
+                                      child: CustomTextField(
+                                          placeholder: "Email",
+                                          valid: _isEmailValid(),
+                                          errorText: "Invalid email",
+                                          controller: _emailController,
+                                          prefixIcon: const Icon(
+                                            Icons.mail,
+                                            color: themeColorDarkest,
+                                          )),
                                     ),
                                     // ---------------------------
-                                    SizedBox(height: 20),
+
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 25.0),
-                                      child: TextField(
-                                        controller: _email,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            hintText: 'Email',
-                                            icon: Icon(
-                                              Icons.email,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
+                                      child: CustomTextField(
+                                        controller: _passwordController,
+                                        valid: _isPasswordValid(),
+                                        errorText:
+                                            "Password must of of at-least of 8 characters",
+                                        hideText: !_isPasswordVisible,
+                                        suffixIcon: IconButton(
+                                            onPressed: _toggleVisibility,
+                                            icon: Icon(_isPasswordVisible
+                                                ? Icons.visibility_outlined
+                                                : Icons
+                                                    .visibility_off_outlined)),
+                                        placeholder: "Password",
+                                        prefixIcon: const Icon(
+                                          Icons.lock,
+                                          color: themeColorDarkest,
+                                        ),
                                       ),
                                     ),
-                                    // ---------------------------
-                                    SizedBox(height: 20),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25.0),
-                                      child: TextField(
-                                        controller: _pass,
-                                        obscureText: true,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            hintText: 'Password',
-                                            icon: Icon(
-                                              Icons.lock,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
-                                      ),
+                                    const SizedBox(
+                                      height: 20,
                                     ),
-                                    SizedBox(height: 20),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 25.0),
-                                      child: TextField(
-                                        controller: _cnfmpass,
-                                        obscureText: true,
-                                        decoration: InputDecoration(
-                                            enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white)),
-                                            hintText: 'Confirm Password',
-                                            icon: Icon(
-                                              Icons.check_circle_outline,
-                                              color:
-                                                  Colors.white.withOpacity(0.7),
-                                            ),
-                                            hintStyle: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7))),
+                                      child: CustomTextField(
+                                        controller: _confirmPasswordController,
+                                        hideText: !_isConfirmPasswordVisible,
+                                        valid: _isConfirmPasswordValid(),
+                                        errorText: "Must match the password",
+                                        suffixIcon: IconButton(
+                                            onPressed:
+                                                _toggleConfirmPasswordVisibility,
+                                            icon: Icon(_isConfirmPasswordVisible
+                                                ? Icons.visibility_outlined
+                                                : Icons
+                                                    .visibility_off_outlined)),
+                                        placeholder: "Confirm Password",
+                                        prefixIcon: const Icon(
+                                          Icons.key,
+                                          color: themeColorDarkest,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(height: 40),

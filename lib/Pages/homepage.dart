@@ -1,9 +1,6 @@
-import 'package:file_picker/file_picker.dart';
-
 import 'package:flutter/material.dart';
-
-import 'package:streetvendor/storage_page.dart';
-
+import 'package:streetvendor/Pages/savePage.dart';
+import 'package:streetvendor/Pages/storage_page.dart';
 import 'maindrawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,8 +48,25 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                     elevation: 0,
                     backgroundColor: Colors.white.withOpacity(0.2),
-                    onPressed: () async {
-                      final results = await FilePicker.platform.pickFiles(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SavePage()));
+                    },
+                    child: Icon(Icons.camera)),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// onpressed
+/*final results = await FilePicker.platform.pickFiles(
                           allowMultiple: false,
                           allowedExtensions: ['png', 'jpg'],
                           type: FileType.custom);
@@ -68,17 +82,4 @@ class _HomePageState extends State<HomePage> {
                       print(fileName);
                       storage
                           .uploadFile(path, fileName)
-                          .then((value) => print('done'));
-                    },
-                    child: Icon(Icons.camera)),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+                          .then((value) => print('done'));*/

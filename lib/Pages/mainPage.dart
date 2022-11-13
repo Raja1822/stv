@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:streetvendor/authpage.dart';
-import 'package:streetvendor/homepage.dart';
-import 'package:streetvendor/loginpage.dart';
+import 'package:streetvendor/Authentication/authpage.dart';
+import 'package:streetvendor/Pages/homepage.dart';
 
 class mainpage extends StatelessWidget {
   const mainpage({super.key});
