@@ -390,6 +390,11 @@ class _SavePageState extends State<SavePage> {
                                         GestureDetector(
                                           onTap: () {
                                             save();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomePage()));
                                           },
                                           child: Container(
                                             padding: EdgeInsets.all(15),
